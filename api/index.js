@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import userRouter from './routes/user.route.js'
 dotenv.config();
 
 mongoose.connect(process.env.MONGO).then(()=>{
@@ -20,6 +21,4 @@ app.listen(PORT, () => {
     console.error('Error starting server')
 }
 
-app.get("/",(req,res)=>{
-    res.send({message: "helddlo"})
-})
+app.use('/api/user', userRouter);
