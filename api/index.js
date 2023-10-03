@@ -34,4 +34,4 @@ app.use((err, req, res, next)=>{
         statusCode, //equivalent to statusCode : statusCode
         message,
     })
-})
+});
