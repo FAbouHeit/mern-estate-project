@@ -14,7 +14,11 @@ const userSchema = new mongoose.Schema({
     password: {
         type : String,
         required: true
-    }
+    },
+    avatar: {
+        type: String,
+        default: "https://icon-library.com/images/profile-picture-icon/profile-picture-icon-0.jpg"
+    },
 }, { timestamps: true }); //records the time of creation and updation of user
 
 const User = mongoose.model('User', userSchema);
