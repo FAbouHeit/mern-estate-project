@@ -9,7 +9,11 @@ import {
   updateUserFailure, 
   deleteUserStart, 
   deleteUserSuccess, 
-  deleteUserFailure } from '../redux/user/userSlice.js';
+  deleteUserFailure, 
+  signOutStart,
+  signOutSuccess,
+  signOutFailure,
+} from '../redux/user/userSlice.js';
 
 
 export default function Profile() {
@@ -21,7 +25,7 @@ export default function Profile() {
   const [formData, setFormData] = useState({});
   const dispatch = useDispatch();
   const [updateSuccess, setUpdateSuccess] = useState(false);
-  // const [deleteSuccess, setDeleteSuccess] = useState(false);
+
   useEffect(()=>{
     if(file) {
       handleFileUpload(file);
@@ -97,6 +101,21 @@ export default function Profile() {
     }
   }
 
+  const handleSignOut = async () =>{
+    try{
+      dispatch(signOutStart())
+      const req = await fetch('/api/auth/signout');
+      const data = req.json();
+      if(data.success === false){
+        dispatch(signOutFailure(data.message));
+        return;
+      }
+      dispatch(signOutSuccess(data));
+    } catch(error){
+      dispatch(signOutFailure(error.message))
+    }
+  }
+
   return (
     <div className='p-3 max-w-lg mx-auto'>
       <h1 className='text-3xl font-semibold text-center my-7'>Profile</h1>
@@ -145,7 +164,7 @@ export default function Profile() {
       </form>
       <div className='flex justify-between mt-5'>
         <span onClick={handleDeleteUser} className='text-red-700 cursor-pointer'>Delete Account</span>
-        <span className='text-red-700 cursor-pointer'>Sign Out</span>
+        <span onClick={handleSignOut} className='text-red-700 cursor-pointer'>Sign Out</span>
       </div>
       <p className='text-red-700 mt-5'>{error ? error : ''}</p>
       <p className='text-green-700'>{updateSuccess ? 'User updated successfully!' : ''}</p>
